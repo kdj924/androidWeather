@@ -62,32 +62,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void run() {
-        try {
-            URL url = new URL("https://assets.weatherstack.com//images//wsymbols01_png_64//wsymbol_0003_white_cloud.png");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setDoInput(true);
-            conn.connect();
-
-            InputStream is = conn.getInputStream();
-            bitmap = BitmapFactory.decodeStream(is);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        imageView.setImageBitmap(bitmap);
-    }
-
-
     String getJsonData() {
         StringBuffer buffer = new StringBuffer();
         String str = edit.getText().toString();
         String location = URLEncoder.encode(str);
 
         //String queryUrl="http://api.weatherstack.com/current?access_key="+key+"&query="+location;
-        String queryUrl = "http://api.weatherstack.com/current?access_key=9a2cdb92482fb060bcdc3bec358a713e&query=" + location;
+        String queryUrl = "http://api.weatherstack.com/current?access_key=111453242708ba78c89a6250c4b07d83&query=" + location;
         try {
             URL url = new URL(queryUrl);
             InputStream is = null;
@@ -103,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             JSONObject obj2 = obj.getJSONObject("current");
             int temp = obj2.getInt("temperature");
             String icon = obj2.getString("weather_icons");
-            URL url2 = new URL(icon);
+            URL url2 = new URL("https://assets.weatherstack.com//images//wsymbols01_png_64//wsymbol_0003_white_cloud.png");
             bitmap = BitmapFactory.decodeStream(url2.openConnection().getInputStream());
             System.out.println(temp);
             System.out.println(icon);
