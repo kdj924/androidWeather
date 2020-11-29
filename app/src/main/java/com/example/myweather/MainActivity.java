@@ -2,31 +2,22 @@ package com.example.myweather;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
 public class MainActivity extends AppCompatActivity {
     EditText edit;
     TextView text;
-    ImageView imageView;
-    Bitmap bitmap;
-
     String key = "9a2cdb92482fb060bcdc3bec358a713e";
     String data;
 
@@ -37,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
         edit = (EditText) findViewById(R.id.edit);
         text = (TextView) findViewById(R.id.result);
-        imageView = (ImageView) findViewById(R.id.imageView);
     }
 
     public void mOnClick(View v) {
@@ -53,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 text.setText(data);
-                                imageView.setImageBitmap(bitmap);
                             }
                         });
                     }
@@ -66,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
         StringBuffer buffer = new StringBuffer();
         String str = edit.getText().toString();
         String location = URLEncoder.encode(str);
-
-        //String queryUrl="http://api.weatherstack.com/current?access_key="+key+"&query="+location;
         String queryUrl = "http://api.weatherstack.com/current?access_key=111453242708ba78c89a6250c4b07d83&query=" + location;
         try {
             URL url = new URL(queryUrl);
@@ -83,11 +70,7 @@ public class MainActivity extends AppCompatActivity {
             JSONObject obj = new JSONObject(str1);
             JSONObject obj2 = obj.getJSONObject("current");
             int temp = obj2.getInt("temperature");
-            String icon = obj2.getString("weather_icons");
-            URL url2 = new URL("https://assets.weatherstack.com//images//wsymbols01_png_64//wsymbol_0003_white_cloud.png");
-            bitmap = BitmapFactory.decodeStream(url2.openConnection().getInputStream());
             System.out.println(temp);
-            System.out.println(icon);
             if (temp != 0) {
                 buffer.append("The temperature in " + location.toUpperCase() + " is " + temp + "°c");
             }
