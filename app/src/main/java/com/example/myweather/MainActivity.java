@@ -79,10 +79,16 @@ public class MainActivity extends AppCompatActivity {
             JSONObject obj = new JSONObject(str1);
             JSONObject obj2 = obj.getJSONObject("current");
             int temp = obj2.getInt("temperature");
-           // String icon = obj2.getString("weather_icons");
+            String icon = obj2.getString("weather_icons");
+            icon = icon.replace("\\/\\/", "//");
+            icon = icon.replace("\\/","/");
+            icon = icon.replace("\"", "");
+            icon = icon.replace("[", "");
+            icon = icon.replace("]", "");
+            System.out.println(icon);
            // String encodedurl = URLEncoder.encode(icon,"UTF-8");
            // System.out.println(encodedurl);
-            URL url2 = new URL("https://assets.weatherstack.com//images//wsymbols01_png_64//wsymbol_0006_mist.png");
+            URL url2 = new URL(icon);
            // URL url2 = new URL(encodedurl);
             //System.out.println(url2);
             bitmap = BitmapFactory.decodeStream(url2.openConnection().getInputStream());
