@@ -13,11 +13,8 @@ import android.widget.TextView;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -80,20 +77,14 @@ public class MainActivity extends AppCompatActivity {
             JSONObject obj2 = obj.getJSONObject("current");
             int temp = obj2.getInt("temperature");
             String icon = obj2.getString("weather_icons");
-            icon = icon.replace("\\/\\/", "//");
-            icon = icon.replace("\\/","/");
+            icon = icon.replace("\\","");
             icon = icon.replace("\"", "");
             icon = icon.replace("[", "");
             icon = icon.replace("]", "");
             System.out.println(icon);
-           // String encodedurl = URLEncoder.encode(icon,"UTF-8");
-           // System.out.println(encodedurl);
             URL url2 = new URL(icon);
-           // URL url2 = new URL(encodedurl);
-            //System.out.println(url2);
             bitmap = BitmapFactory.decodeStream(url2.openConnection().getInputStream());
             System.out.println(temp);
-            //System.out.println(icon);
             System.out.println(bitmap);
             if (temp != 0) {
                 buffer.append("The temperature in " + location.toUpperCase() + " is " + temp + "°c");
