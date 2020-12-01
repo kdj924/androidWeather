@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -23,8 +24,6 @@ public class MainActivity extends AppCompatActivity {
     TextView text;
     ImageView imageView;
     Bitmap bitmap;
-
-    String key = "9a2cdb92482fb060bcdc3bec358a713e";
     String data;
 
     @Override
@@ -59,33 +58,26 @@ public class MainActivity extends AppCompatActivity {
 
     String getJsonData() {
         StringBuffer buffer = new StringBuffer();
-        String str = edit.getText().toString();
-        String location = URLEncoder.encode(str);
+        String input = edit.getText().toString();
+        String location = URLEncoder.encode(input);
 
-        //String queryUrl="http://api.weatherstack.com/current?access_key="+key+"&query="+location;
         String queryUrl = "http://api.weatherstack.com/current?access_key=111453242708ba78c89a6250c4b07d83&query=" + location;
         try {
             InputStream is = null;
             is = new URL(queryUrl).openStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-            String str1 = rd.readLine();
+            String str = rd.readLine();
             System.out.println("testing");
-            if (str1 == null) {
+            if (str == null) {
                 buffer.append("not found");
             }
-            JSONObject obj = new JSONObject(str1);
+            JSONObject obj = new JSONObject(str);
             JSONObject obj2 = obj.getJSONObject("current");
             int temp = obj2.getInt("temperature");
-            String icon = obj2.getString("weather_icons");
-            icon = icon.replace("\\","");
-            icon = icon.replace("\"", "");
-            icon = icon.replace("[", "");
-            icon = icon.replace("]", "");
-            System.out.println(icon);
+            JSONArray iconUrl = obj2.getJSONArray("weather_icons");
+            String icon = iconUrl.getString(0);
             URL url2 = new URL(icon);
             bitmap = BitmapFactory.decodeStream(url2.openConnection().getInputStream());
-            System.out.println(temp);
-            System.out.println(bitmap);
             if (temp != 0) {
                 buffer.append("The temperature in " + location.toUpperCase() + " is " + temp + "°c");
             }
